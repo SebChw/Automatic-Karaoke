@@ -74,5 +74,6 @@ jobs:
         id: deploy-to-webapp
         with:
           app-name: 'automatic-karaoke-frontend'
+          package: 'mainPage'
           slot-name: 'Production'
           
