@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Karaoke App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Automatic Karaoke App</h1>
+        <form action="/upload" method="post" enctype="multipart/form-data">
+            <label for="file">Upload File:</label>
+            <input type="file" id="file" name="file" accept=".mp3,.mp4" required><br><br>
+
+            <label>Remove Instruments:</label><br>
+
+            {% for instrument in instruments %}
+            <input type="checkbox" id="{{ instrument|lower }}" name="instrument" value="{{ instrument|lower }}">
+            <label for="{{ instrument|lower }}">{{ instrument }}</label> <br>
+            {% endfor %}
+
+            <label for="output">Output Format:</label>
+            <select id="output" name="output">
+                <option value="mp3">MP3</option>
+                <option value="mp4">MP4</option>
+            </select><br><br>
+
+            <div id="mp4_options" style="display: none;">
+                <label>MP4 options:</label><br>
+                <input type="checkbox" name="extract_text">
+                <label>Extract Text</label><br>
+
+                <label>Upload Custom Image</label>
+                <input type="file" name="custom_image" accept=".img,.png"><br>
+
+                <input type="checkbox" name="generate_image">
+                <label>Generate Image using SD</label><br>
+            </div>
+
+            <div id="remove_vocal_options" style="display: none;">
+                <label>Vocal options:</label><br>
+                <input type="checkbox" name="add_melody_line">
+                <label>Add Melody Line</label><br>
+
+                <input type="checkbox" name="add_jumping_circle">
+                <label>Add Jumping Circle</label><br>
+            </div>
+
+            <input type="submit" value="Submit">
+        </form>
+        {% if show_download %}
+        <a href="https://www.facebook.com" class="btn-download">Download Processed File</a>
+        {% endif %}
+    </div>
+
+
+    <script>
+        document.getElementById('output').addEventListener('change', function () {
+            var mp4Options = document.getElementById('mp4_options');
+            if (this.value === 'mp4') {
+                mp4Options.style.display = 'block';
+            } else {
+                mp4Options.style.display = 'none';
+            }
+        });
+        document.getElementById('vocal').addEventListener('change', function () {
+            var vocalChecked = document.getElementById('vocal').checked;
+            var removeVocalOptions = document.getElementById('remove_vocal_options');
+            if (this.checked) {
+                removeVocalOptions.style.display = 'block';
+            }
+            else {
+                removeVocalOptions.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+
+</html>
